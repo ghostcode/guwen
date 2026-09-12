@@ -3,6 +3,7 @@ import type { Article } from '@/types'
 import { daoDeJing1, daoDeJing8 } from './texts/daodejing'
 import { kongQueDongNanFei } from './texts/kongque-dongnanfei'
 import { mulanShi } from './texts/mulan-shi'
+import { dingFengBo } from './texts/ding-feng-bo'
 import { quanXue } from './texts/quan-xue'
 import { chuShiBiao } from './texts/chushi-biao'
 import { lanTingJiXu } from './texts/lantingxu'
@@ -36,6 +37,7 @@ export const articles: Article[] = [
   zuiWengTing,
   aiLianShuo,
   jiChengTianSi,
+  dingFengBo,
   qianChiBiFu,
   sanZiJing,
 ]
