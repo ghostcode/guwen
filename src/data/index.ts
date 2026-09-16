@@ -3,6 +3,7 @@ import type { Article } from '@/types'
 import { daoDeJing1, daoDeJing8 } from './texts/daodejing'
 import { kongQueDongNanFei } from './texts/kongque-dongnanfei'
 import { mulanShi } from './texts/mulan-shi'
+import { luoShengFu } from './texts/luoshen-fu'
 import { dingFengBo } from './texts/ding-feng-bo'
 import { quanXue } from './texts/quan-xue'
 import { chuShiBiao } from './texts/chushi-biao'
@@ -10,6 +11,7 @@ import { lanTingJiXu } from './texts/lantingxu'
 import { taoHuaYuan } from './texts/taohuayuan'
 import { guiQuLaiXiCi } from './texts/guiqu-lai'
 import { chunYeYan } from './texts/chunye-yan'
+import { tengWangGeXu } from './texts/tengwang-ge-xu'
 import { louShiMing } from './texts/loushi-ming'
 import { xiaoShiTan } from './texts/xiaoshitan'
 import { yueYangLou } from './texts/yueyanglou'
@@ -26,10 +28,12 @@ export const articles: Article[] = [
   quanXue,
   kongQueDongNanFei,
   mulanShi,
+  luoShengFu,
   chuShiBiao,
   lanTingJiXu,
   taoHuaYuan,
   guiQuLaiXiCi,
+  tengWangGeXu,
   chunYeYan,
   louShiMing,
   xiaoShiTan,
