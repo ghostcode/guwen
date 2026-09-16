@@ -49,6 +49,34 @@ const store = useReadingStore()
       译文
     </button>
 
+    <button
+      class="tb__btn tb__btn--wide"
+      :class="{ 'is-on': store.reciteMode }"
+      title="遮字填空背诵模式"
+      @click="store.toggleRecite()"
+    >
+      背诵
+    </button>
+
+    <template v-if="store.reciteMode">
+      <button
+        class="tb__btn"
+        :class="{ 'is-on': store.reciteAll }"
+        title="显示全部原字"
+        @click="store.setReciteAll(true)"
+      >
+        全显
+      </button>
+      <button
+        class="tb__btn"
+        :class="{ 'is-on': !store.reciteAll }"
+        title="隐藏全部原字"
+        @click="store.setReciteAll(false)"
+      >
+        全隐
+      </button>
+    </template>
+
     <span class="tb__sep" />
 
     <button

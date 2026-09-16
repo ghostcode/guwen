@@ -10,6 +10,7 @@ import { chuShiBiao } from './texts/chushi-biao'
 import { lanTingJiXu } from './texts/lantingxu'
 import { taoHuaYuan } from './texts/taohuayuan'
 import { guiQuLaiXiCi } from './texts/guiqu-lai'
+import { guiYuanTianJu } from './texts/guiyuan-tian-ju'
 import { chunYeYan } from './texts/chunye-yan'
 import { tengWangGeXu } from './texts/tengwang-ge-xu'
 import { louShiMing } from './texts/loushi-ming'
@@ -33,6 +34,7 @@ export const articles: Article[] = [
   lanTingJiXu,
   taoHuaYuan,
   guiQuLaiXiCi,
+  guiYuanTianJu,
   tengWangGeXu,
   chunYeYan,
   louShiMing,

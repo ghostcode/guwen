@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { getArticle, getNeighbors, toChineseNumber, articles } from '@/data'
 import { useReadingStore } from '@/stores/reading'
@@ -16,6 +16,12 @@ const store = useReadingStore()
 const article = computed<Article | undefined>(() => getArticle(props.id))
 const neighbors = computed(() => getNeighbors(props.id))
 const bookmarked = computed(() => store.isBookmarked(props.id))
+
+// 切换篇目时清空背诵填空进度，避免跨篇误显
+watch(
+  () => props.id,
+  () => store.clearChars(),
+)
 
 const progress = ref(0)
 
