@@ -21,6 +21,7 @@ import { aiLianShuo } from './texts/ailian-shuo'
 import { jiChengTianSi } from './texts/chengtian-si'
 import { qianChiBiFu } from './texts/chibi-fu'
 import { sanZiJing } from './texts/sanzi-jing'
+import { zengGuangXianWen } from './texts/zeng-guang-xian-wen'
 
 /** 全站篇目，按时代先后排列 */
 export const articles: Article[] = [
@@ -46,6 +47,7 @@ export const articles: Article[] = [
   dingFengBo,
   qianChiBiFu,
   sanZiJing,
+  zengGuangXianWen,
 ]
 
 export const articleMap: Record<string, Article> = articles.reduce(
