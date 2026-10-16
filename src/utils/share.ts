@@ -1,3 +1,4 @@
+import QRCode from 'qrcode'
 import type { Article } from '@/types'
 
 /** 是否处于微信内置浏览器 */
@@ -34,6 +35,24 @@ function wrapText(ctx: CanvasRenderingContext2D, text: string, maxWidth: number)
   return lines
 }
 
+/** 圆角矩形路径 */
+function roundRectPath(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  r: number,
+) {
+  ctx.beginPath()
+  ctx.moveTo(x + r, y)
+  ctx.arcTo(x + w, y, x + w, y + h, r)
+  ctx.arcTo(x + w, y + h, x, y + h, r)
+  ctx.arcTo(x, y + h, x, y, r)
+  ctx.arcTo(x, y, x + w, y, r)
+  ctx.closePath()
+}
+
 function drawSeal(
   ctx: CanvasRenderingContext2D,
   x: number,
@@ -65,7 +84,10 @@ function drawSeal(
  * 把一篇古文绘制为竖版分享图（1080×1440，离线可生成）。
  * 配色固定为暖宣纸 + 朱砂，不随站点主题变化，保证分享图风格统一。
  */
-export async function renderShareCanvas(article: Article): Promise<HTMLCanvasElement> {
+export async function renderShareCanvas(
+  article: Article,
+  link: string,
+): Promise<HTMLCanvasElement> {
   const W = 1080
   const H = 1440
   const canvas = document.createElement('canvas')
@@ -182,6 +204,41 @@ export async function renderShareCanvas(article: Article): Promise<HTMLCanvasEle
   ctx.textBaseline = 'middle'
   ctx.fillText('古文 · 一页一篇', 168, footerY + 16)
   ctx.textAlign = 'center'
+
+  // 二维码（合成至海报右下角，扫码直达该篇）
+  const qrSize = 150
+  const qrPad = 14
+  const qrX = W - 76 - qrSize
+  const qrY = footerY - qrSize - 6
+  // 白底圆角卡片
+  roundRectPath(ctx, qrX - qrPad, qrY - qrPad, qrSize + qrPad * 2, qrSize + qrPad * 2, 10)
+  ctx.fillStyle = '#ffffff'
+  ctx.fill()
+  ctx.strokeStyle = 'rgba(155,46,46,0.5)'
+  ctx.lineWidth = 1.5
+  ctx.stroke()
+  // 生成二维码并绘制
+  try {
+    const qrCanvas = document.createElement('canvas')
+    await QRCode.toCanvas(qrCanvas, link, {
+      margin: 1,
+      width: qrSize * 2,
+      color: { dark: '#2b2014', light: '#ffffff' },
+    })
+    ctx.drawImage(qrCanvas, qrX, qrY, qrSize, qrSize)
+    // “扫码阅读全文”标签（二维码左侧，右对齐）
+    ctx.fillStyle = INK2
+    ctx.font = '400 34px "KaiTi","STKaiti","SimSun",serif'
+    ctx.textAlign = 'right'
+    ctx.textBaseline = 'middle'
+    const labelX = qrX - qrPad - 16
+    const labelMidY = qrY + qrSize / 2
+    ctx.fillText('扫码', labelX, labelMidY - 24)
+    ctx.fillText('阅读全文', labelX, labelMidY + 24)
+    ctx.textAlign = 'center'
+  } catch {
+    // 二维码生成失败时不影响海报主体
+  }
 
   return canvas
 }

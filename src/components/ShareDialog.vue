@@ -57,7 +57,7 @@ watch(
     qrUrl.value = ''
     qrCanvas.value = null
     try {
-      const c = await renderShareCanvas(props.article)
+      const c = await renderShareCanvas(props.article, link.value)
       canvas.value = c
       previewUrl.value = c.toDataURL('image/png')
     } catch {
