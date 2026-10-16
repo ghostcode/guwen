@@ -24,12 +24,12 @@ import { qianChiBiFu } from './texts/chibi-fu'
 import { sanZiJing } from './texts/sanzi-jing'
 import { zengGuangXianWen } from './texts/zeng-guang-xian-wen'
 
-/** 全站篇目，按时代先后排列 */
+/** 全站篇目，新增篇目置前，余按时代先后排列 */
 export const articles: Article[] = [
+  shiJiHuoZhi,
   daoDeJing1,
   daoDeJing8,
   quanXue,
-  shiJiHuoZhi,
   kongQueDongNanFei,
   mulanShi,
   luoShengFu,
