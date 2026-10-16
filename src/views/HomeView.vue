@@ -2,8 +2,11 @@
 import { computed, ref } from 'vue'
 import { articles, toChineseNumber } from '@/data'
 import { useReadingStore } from '@/stores/reading'
+import { useShare } from '@/utils/useShare'
+import ShareDialog from '@/components/ShareDialog.vue'
 
 const store = useReadingStore()
+const share = useShare()
 
 const keyword = ref('')
 const genre = ref('全部')
@@ -109,11 +112,21 @@ const bookmarkedArticles = computed(() =>
           <p class="card__tag">{{ a.genre }}</p>
           <p v-if="a.famousQuote" class="card__quote">「{{ a.famousQuote }}」</p>
           <span class="card__arrow">→</span>
+          <button
+            class="card__share"
+            type="button"
+            title="分享图片"
+            @click.stop.prevent="share.openShare(a)"
+          >
+            享
+          </button>
         </RouterLink>
       </div>
 
       <p v-else class="empty kai">无此篇，请另寻</p>
     </section>
+
+    <ShareDialog :article="share.article" :open="share.open" @close="share.close" />
   </div>
 </template>
 
@@ -385,6 +398,32 @@ const bookmarkedArticles = computed(() =>
   color: var(--ink-3);
   opacity: 0.5;
   transition: color 0.3s var(--ease);
+}
+
+.card__share {
+  position: absolute;
+  right: 16px;
+  top: 44px;
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-kai);
+  font-size: 14px;
+  color: var(--ink-3);
+  background: var(--paper-soft);
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  opacity: 0.62;
+  transition: all 0.3s var(--ease);
+}
+
+.card__share:hover {
+  color: var(--cinnabar);
+  border-color: var(--cinnabar);
+  background: var(--cinnabar-soft);
+  opacity: 1;
 }
 
 .card:hover .card__no {

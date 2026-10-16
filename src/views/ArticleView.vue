@@ -7,11 +7,14 @@ import type { Article } from '@/types'
 import ArticleParagraph from '@/components/ArticleParagraph.vue'
 import ReadingToolbar from '@/components/ReadingToolbar.vue'
 import InkDivider from '@/components/InkDivider.vue'
+import ShareDialog from '@/components/ShareDialog.vue'
+import { useShare } from '@/utils/useShare'
 
 const props = defineProps<{ id: string }>()
 
 const router = useRouter()
 const store = useReadingStore()
+const share = useShare()
 
 const article = computed<Article | undefined>(() => getArticle(props.id))
 const neighbors = computed(() => getNeighbors(props.id))
@@ -122,6 +125,7 @@ function goRandom() {
             {{ bookmarked ? '已藏' : '藏书' }}
           </button>
           <button class="mark" @click="goRandom">随机</button>
+          <button class="mark" @click="share.openShare(article)">分享</button>
         </div>
 
         <p class="head__lead">{{ article.lead }}</p>
@@ -194,6 +198,8 @@ function goRandom() {
           <span class="neighbor__author">{{ neighbors.next.author }}</span>
         </RouterLink>
       </nav>
+
+      <ShareDialog :article="share.article" :open="share.open" @close="share.close" />
     </div>
   </div>
 </template>
