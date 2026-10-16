@@ -31,12 +31,27 @@ function onScroll() {
   progress.value = max > 0 ? Math.min(1, doc.scrollTop / max) : 0
 }
 
+/* ---------- 工具条吸顶 ---------- */
+const tbSentinel = ref<HTMLElement | null>(null)
+const stuck = ref(false)
+let tbObserver: IntersectionObserver | null = null
+
 onMounted(() => {
   onScroll()
   window.addEventListener('scroll', onScroll, { passive: true })
+  if (tbSentinel.value) {
+    tbObserver = new IntersectionObserver(
+      ([entry]) => {
+        stuck.value = !entry.isIntersecting
+      },
+      { threshold: 0 },
+    )
+    tbObserver.observe(tbSentinel.value)
+  }
 })
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', onScroll)
+  tbObserver?.disconnect()
   if ('speechSynthesis' in window) window.speechSynthesis.cancel()
 })
 
@@ -114,8 +129,11 @@ function goRandom() {
         <p v-if="article.famousQuote" class="head__quote kai">「{{ article.famousQuote }}」</p>
       </header>
 
-      <!-- 工具条 -->
-      <ReadingToolbar :speaking="speaking" @toggle-speech="toggleSpeech" />
+      <!-- 工具条（滚动吸顶） -->
+      <span ref="tbSentinel" class="tb-sentinel" aria-hidden="true" />
+      <div class="toolbar-wrap" :class="{ 'is-stuck': stuck }">
+        <ReadingToolbar :speaking="speaking" @toggle-speech="toggleSpeech" />
+      </div>
 
       <!-- 正文 -->
       <div
@@ -312,10 +330,48 @@ function goRandom() {
   opacity: 0.9;
 }
 
-/* ---------- 工具条容器 ---------- */
-:deep(.tb) {
+/* ---------- 工具条容器（吸顶） ---------- */
+.tb-sentinel {
+  display: block;
+  width: 100%;
+  height: 1px;
+  margin: 0;
+  padding: 0;
+}
+
+.toolbar-wrap {
+  position: sticky;
+  top: 72px;
+  z-index: 49;
   max-width: var(--text-w);
   margin: 26px auto 34px;
+  padding: 4px;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  transition:
+    background 0.3s var(--ease),
+    box-shadow 0.3s var(--ease),
+    border-color 0.3s var(--ease),
+    backdrop-filter 0.3s var(--ease);
+}
+
+.toolbar-wrap.is-stuck {
+  background: color-mix(in srgb, var(--paper) 90%, transparent);
+  backdrop-filter: blur(10px) saturate(1.1);
+  -webkit-backdrop-filter: blur(10px) saturate(1.1);
+  box-shadow: 0 8px 22px -14px rgba(40, 24, 12, 0.5);
+  border-color: var(--line-soft);
+}
+
+/* 吸顶后让内部工具条融入背板，避免双层边框 */
+.toolbar-wrap.is-stuck :deep(.tb) {
+  background: transparent;
+  border-color: transparent;
+}
+
+:deep(.tb) {
+  margin: 0;
+  max-width: none;
 }
 
 /* ---------- 正文 ---------- */
