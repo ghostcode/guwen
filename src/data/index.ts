@@ -6,6 +6,7 @@ import { mulanShi } from './texts/mulan-shi'
 import { luoShengFu } from './texts/luoshen-fu'
 import { dingFengBo } from './texts/ding-feng-bo'
 import { quanXue } from './texts/quan-xue'
+import { shiJiHuoZhi } from './texts/shiji-huozhi'
 import { chuShiBiao } from './texts/chushi-biao'
 import { lanTingJiXu } from './texts/lantingxu'
 import { taoHuaYuan } from './texts/taohuayuan'
@@ -28,6 +29,7 @@ export const articles: Article[] = [
   daoDeJing1,
   daoDeJing8,
   quanXue,
+  shiJiHuoZhi,
   kongQueDongNanFei,
   mulanShi,
   luoShengFu,
